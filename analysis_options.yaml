@@ -1,0 +1,35 @@
+# This file configures the analyzer to use the lint rule set from `flutter_lints`
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  # The lint rules applied to this project can be customized here.
+  # For a complete list of lint rules, see:
+  # https://dart.dev/tools/linter-rules
+  rules:
+    # Avoid print calls in production code
+    avoid_print: true
+    # Use key in widget constructors where applicable
+    use_key_in_widget_constructors: true
+    # Always specify types for public APIs
+    always_specify_types: false
+    # Prefer const constructors
+    prefer_const_constructors: true
+    # Prefer const declarations
+    prefer_const_declarations: true
+    # Avoid unnecessary braces in string interpolations
+    unnecessary_brace_in_string_interps: true
+
+analyzer:
+  # Exclude generated files from analysis
+  exclude:
+    - '**/*.g.dart'
+    - '**/*.freezed.dart'
+  errors:
+    # Treat missing required parameters as an error, not just a warning
+    missing_required_param: error
+    # Treat using uninitialized variables as an error
+    uninitialized_variable: error
+    # Treat invalid assignments as an error
+    invalid_assignment: error
+    # Treat passing unsupported arguments as an error
+    argument_type_not_assignable: error
