@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:http/http.dart';
 import 'package:solcare_app4/screens/main_screen.dart';
+
+import '../providers/auth_provider.dart';
+import 'auth/auth_screen.dart';
+import 'home/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,23 +20,40 @@ class _SplashScreenState extends State<SplashScreen> {
   //add by vivek
 
   Future<void> _initData() async{
-    
+
+    AuthProvider provider = context.read<AuthProvider>();
+    await provider.init();
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+        builder: (BuildContext context) {
+      // return provider.token == null ? const AuthScreen() : const HomeScreen();
+      return const AuthScreen();
+        },
+    ),
+    );
   }
 
 
 
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   //  Navigate to main screen after 3 seconds
+  //   Future.delayed(const Duration(seconds: 3), () {
+  //     Navigator.of(context).pushReplacement(
+  //       MaterialPageRoute(
+  //         builder: (context) => const MainScreen(),
+  //       ),
+  //     );
+  //   });
+  // }
+
   @override
   void initState() {
     super.initState();
-    //  Navigate to main screen after 3 seconds
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const MainScreen(),
-        ),
-      );
-    });
+    _initData();
   }
 
   @override

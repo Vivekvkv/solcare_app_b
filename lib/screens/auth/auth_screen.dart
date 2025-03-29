@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:solcare_app4/providers/auth_provider.dart';
 import 'dart:async';
 import 'package:solcare_app4/screens/home/home_screen.dart';
 import 'package:solcare_app4/screens/auth/components/animated_background.dart';
 import 'package:solcare_app4/screens/auth/components/otp_input_field.dart';
 import 'package:solcare_app4/screens/auth/forgot_password_screen.dart';
+
+import '../../models/auth_token_model.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -94,27 +98,44 @@ class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateM
   }
   
   Future<void> _sendLoginOtp() async {
-    // Validate mobile number
-    if (!_loginFormKey.currentState!.validate()) {
-      return;
+    setState(() => _loginOtpSent = true);
+    AuthProvider provider = context.read<AuthProvider>();
+    AuthToken auth = await provider.login(
+        mobileNumber: _loginMobileController.text);
+    if (auth.token == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            auth.message ?? 'Oops! Something went wrong...',
+          ),
+        ),
+      );
     }
+    else
+      {
+        setState(() {
+          _isLoginLoading = true;
+        });
+
+        // Simulate API call delay
+        await Future.delayed(const Duration(seconds: 2));
+
+        setState(() {
+          _isLoginLoading = false;
+          _loginOtpSent = true;
+          _startResendTimer();
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('OTP sent successfully!')),
+        );
+      }
+    // Validate mobile number
+    // if (!_loginFormKey.currentState!.validate()) {
+    //   return;
+    // }
     
-    setState(() {
-      _isLoginLoading = true;
-    });
-    
-    // Simulate API call delay
-    await Future.delayed(const Duration(seconds: 2));
-    
-    setState(() {
-      _isLoginLoading = false;
-      _loginOtpSent = true;
-      _startResendTimer();
-    });
-    
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('OTP sent successfully!')),
-    );
+
   }
   
   Future<void> _verifyRegisterOtp() async {

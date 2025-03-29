@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'package:google_fonts/google_fonts.dart';
+import 'package:solcare_app4/providers/auth_provider.dart';
 import 'package:solcare_app4/screens/splash_screen.dart';
 import 'package:solcare_app4/providers/service_provider.dart';
 import 'package:solcare_app4/providers/booking_provider.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => ReelProvider()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
@@ -51,7 +53,7 @@ class MyApp extends StatelessWidget {
                 themeProvider.getTheme().textTheme,
               ),
             ),
-            home: const SplashScreen(),
+            home: const AuthScreen(),
           //  home: const AuthScreen(),
           );
         },

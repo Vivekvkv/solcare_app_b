@@ -8,23 +8,34 @@ import '../models/user_me_model.dart';
 
 class ApiClient {
   // Base URL is handled by AppConstant
-  static final String _baseUrl = AppConstant.baseUrl;
+  static final String _baseUrl = AppConstant.baseUrl1;
 
   // Method to login using http
   static Future<AuthToken> login({
-    required String username,
-    required String password,
+    required String mobileNumber
+    // required String username,
+    // required String password,
   }) async {
-    final Uri url = Uri.parse('$_baseUrl/jwt-auth/v1/token');
+    final Uri url = Uri.parse('$_baseUrl/auth/send-otp');
 
     // Send a POST request
     final response = await http.post(
       url,
-      body: <String, String>{
-        'username': username,
-        'password': password,
+      headers: {
+        'Content-Type': 'application/json',
       },
+      body: json.encode({
+        'mobileNumber': mobileNumber.toString(),
+      }),
     );
+    // final response = await http.post(
+    //   url,
+    //   body: <String, String>{
+    //     'username': username,
+    //     'password': password,
+    //   },
+    // );
+
 
     // Check if response status is OK (200)
     if (response.statusCode == 200) {
